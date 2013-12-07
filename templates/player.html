@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <title>LOL</title>
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+        <script type="text/javascript">
+            var memes = {{ memes | safe }}
+        </script>
+        <script src="/static/js/meme_lookup.js"></script>
+        <script src="/static/js/meme.js"></script>
+        <script src="/static/js/main.js"></script>
+        <link type="text/css" rel="stylesheet" href="static/css/main.css"></link>
+    </head>
+    <body>
+        <div id="canvas-holder">
+        </div>
+        <audio controls id="player" preload="auto" style="display:none;">
+        <source src="{{ song_path }}" type="{{ mime_type }}">
+        Your browser does not support the audio tag.
+        </audio>
+    </body>
+</html>
