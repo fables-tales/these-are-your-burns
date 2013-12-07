@@ -51,9 +51,9 @@ $(window).ready(function() {
             $('#kenburns').kenburns({
                 images:canvases,
                 frames_per_second: 30,
-                display_time: 7000,
-                fade_time: 1000,
-                zoom: 2,
+                display_time: 500,
+                fade_time: 50,
+                zoom: .5,
                 background_color:'#ffffff',
             });
         });

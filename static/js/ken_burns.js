@@ -3,16 +3,22 @@
     $.fn.kenburns = function(options) {
 
         var $canvas = $(this);
+        var old_opts = options;
         var ctx = this[0].getContext('2d');
         var start_time = null;
         var width = $canvas.width();
         var height = $canvas.height();
 
         var image_paths = options.images;
-        var display_time = options.display_time || 7000;
-        var fade_time = Math.min(display_time / 2, options.fade_time || 1000);
-        var solid_time = display_time - (fade_time * 2);
-        var fade_ratio = fade_time - display_time
+        var display_time = function() {
+            return old_opts.display_time || 7000;
+        };
+        var fade_time = function() {
+            return Math.min(display_time() / 2, options.fade_time || 1000);
+        }
+
+        var solid_time = display_time() - (fade_time() * 2);
+        var fade_ratio = fade_time() - display_time()
         var frames_per_second = options.frames_per_second || 30;
         var frame_time = (1 / frames_per_second) * 1000;
         var zoom_level = 1 / (options.zoom || 2);
@@ -141,39 +147,37 @@
         }
 
         function clear() {
-            // Clear the canvas
-            ctx.save();
-            ctx.globalAlpha = 1;
-            ctx.fillStyle = clear_color;
-            ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-            ctx.restore();
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         }
 
         function update() {
             // Render the next frame
             var update_time = get_time();
+            clear();
 
-            var top_frame = Math.floor(update_time / (display_time - fade_time));
-            var frame_start_time = top_frame * (display_time - fade_time);
+            var top_frame = Math.floor(update_time / (display_time() - fade_time()));
+            var frame_start_time = top_frame * (display_time() - fade_time());
             var time_passed = update_time - frame_start_time;
 
             function wrap_index(i) {
                 return (i + images.length) % images.length;
             }
 
-            if (time_passed < fade_time)
+            if (time_passed < fade_time())
             {
                 var bottom_frame = top_frame - 1;
-                var bottom_frame_start_time = frame_start_time - display_time + fade_time;
+                var bottom_frame_start_time = frame_start_time - display_time() + fade_time();
                 var bottom_time_passed = update_time - bottom_frame_start_time;
-                if (update_time < fade_time) {
+                if (update_time < fade_time()) {
                     clear();
                 } else {
-                    render_image(wrap_index(bottom_frame), bottom_time_passed / display_time, 1);
+                    render_image(wrap_index(bottom_frame), bottom_time_passed / display_time(), 1);
                 }
+            } else {
+                old_opts.display_time = memes[top_frame % memes.length].transition_after
             }
 
-            render_image(wrap_index(top_frame), time_passed / display_time, time_passed / fade_time);
+            render_image(wrap_index(top_frame), time_passed / display_time(), time_passed / fade_time());
 
             if (options.post_render_callback) {
                 options.post_render_callback($canvas, ctx);

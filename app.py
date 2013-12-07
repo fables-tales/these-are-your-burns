@@ -12,7 +12,7 @@ def memes(song_path):
     return [
                 {
                     "image_url": "static/img/all_the_things.png",
-                    "transition_after": 3000,
+                    "transition_after": 5000,
                     "top_text": "Music",
                     "bottom_text": "All the things",
                 },
