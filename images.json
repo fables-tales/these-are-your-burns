@@ -1,7 +1,13 @@
 {
-    "memes": {
+    "memes": [{
         "all-the-things": {
-            "source_iamge": "source_images/kkk
+            "source_iamge": "/static/img/all_the_things.png"
+        },
+        "confession-bear":{
+            "source_iamge": "/static/img/confession_bear.jpg"
+        },
+        "doge":{
+            "source_iamge": "/static/img/doge.jpg"
         }
-    }
+      }]
 }

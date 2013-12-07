@@ -8,13 +8,17 @@ Copyright (c) 2013 . All rights reserved.
 """
 
 import sys
-import os
+import os, os.path
 import unittest
+import json
+import random
 import requests
 import pyechonest.track
 
 from bs4 import BeautifulSoup
 
+def base_path():
+    return os.path.dirname(os.path.realpath(__file__))
 
 def rep_genius_parser(artist='', title=''):
   rg_base = "http://rapgenius.com"
@@ -43,7 +47,7 @@ class memeMatcher:
   def __init__(self, filepath):
     self.filepath = filepath
     self._run()
-    
+
   def _run(self):
     self.status = 'processing file'
     self._fetch_EN_analysis()
@@ -70,7 +74,32 @@ class memeMatcher:
     pass
 
   def select_and_align_memes(self):
-    pass
+    with open(os.path.join(base_path(),'images.json')) as rh:
+      memes = json.loads(rh.read())['memes']
+    self.timings = []
+    shuffled_img = random.sample(memes, len(memes))
+    shuffled_phrases = random.sample(self.lyrics, len(self.lyrics))
+    for section in self.track.sections:
+      #draw cards
+      img = shuffled_img.pop()
+      img_path = img.values()[0].values()[0]
+      this_phrase = shuffled_phrases.pop()
+      while len(this_phrase) < 2:
+        if len(shuffled_phrases)==0:
+          this_phrase=['','']
+        else:
+          this_phrase = shuffled_phrases.pop()
+      #reshuffle the decks, if needed
+      if len(shuffled_img)==0:
+        shuffled_img = random.sample(memes, len(memes))
+      if len(shuffled_phrases)==0:
+        shuffled_phrases = random.sample(self.lyrics, len(self.lyrics))
+      lyric_idx = random.sample(range(len(this_phrase)/2),1)[0]*2
+      self.timings.append({"image_url":img_path,
+                           "transition_after": int(section['duration']*1000),
+                           "top_text": this_phrase[lyric_idx],
+                           "bottom_text": this_phrase[lyric_idx+1],
+                          })
 
 
 class memeMatcherTests(unittest.TestCase):
