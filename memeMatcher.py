@@ -10,6 +10,7 @@ Copyright (c) 2013 . All rights reserved.
 import sys
 import os, os.path
 import unittest
+import tempfile
 import json
 import random
 import requests
@@ -82,16 +83,20 @@ class memeMatcher:
     userID = pygn.register(clientID)
     metadata = pygn.search(clientID=clientID, userID=userID, artist=self.artist, track=self.title.split('/')[0])
     try:
-      self.album_art_url = metadata['album_art_url']
+      r = requests.get(metadata['album_art_url'])
+      artist_pic = tempfile.mkstemp(dir=os.path.join(base_path(), 'tmp'))[1]
+      with open(artist_pic, 'wb') as wh:
+        wh.write(r.content)
+      self.album_art = '/audio_files/'+os.path.split(artist_pic)[1]
     except KeyError:
       print 'for', self.artist, ':', self.track, "gracenote doesn't have any album art"
-      self.album_art_url = None
+      self.album_art = None
 
   def select_and_align_memes(self):
     with open(os.path.join(base_path(),'images.json')) as rh:
       memes = json.loads(rh.read())['memes']
-    if self.album_art_url:
-      self.timings = [{"image_url":self.album_art_url,
+    if self.album_art:
+      self.timings = [{"image_url":self.album_art,
                         "transition_after": int(self.track.sections[0]['duration']*1000),
                         "top_text": '',
                         "bottom_text": '',

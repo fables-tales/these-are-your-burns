@@ -1,6 +1,5 @@
 venv/
 db/app.db
-tmp/*.mp3
-tmp/*.wav
-tmp/*.ogg
+tmp/*
+test_data
 *.pyc
