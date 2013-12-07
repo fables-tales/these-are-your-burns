@@ -61,10 +61,26 @@ def database_connection():
 
     return sqlite3.connect('db/app.db')
 
+def favourite_tracks():
+    ids = [1]
+    results = []
+    for oid in ids:
+        song_file = lookup_by_song_id(oid)
+        a = memeMatcher.memeMatcher(song_file)
+        artist = a.artist
+        title = a.title
+        results.append({"id": oid, "artist": artist, "title":title})
+
+    return results
+
 @app.route("/")
 def hello():
     database_connection()
-    return read_template("index.html", {"error": session.get("error", None)})
+    return read_template("index.html",
+            {
+                "error": session.get("error", None),
+                "favourites": favourite_tracks(),
+            })
 
 @app.route("/audio_files/<file_name>")
 def play_song(file_name):

@@ -60,7 +60,6 @@ class memeMatcher:
 
   def _fetch_EN_analysis(self):
     self.track = pyechonest.track.track_from_filename(self.filepath)
-    print "DONE"
     self.artist = self.track.artist
     self.title = self.track.title
 
