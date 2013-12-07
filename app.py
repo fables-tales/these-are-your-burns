@@ -37,10 +37,10 @@ def read_template(template_name, params={}):
     return render_template(template_name, **params)
 
 def database_connection():
-    if not os.path.isfile('db/app.db'):
+    if not os.path.isfile(base_path() + '/db/app.db'):
         raise "YOUR DATABASE DOESNT EXIST FOOL, RUN db/migrate.sh"
 
-    return sqlite3.connect('db/app.db')
+    return sqlite3.connect(base_path() + '/db/app.db')
 
 def favourite_tracks():
     ids = [1]

@@ -33,7 +33,6 @@ def rep_genius_parser(artist='', title=''):
   print r
   soup = BeautifulSoup(r.content)
   raw_lyrics = soup.select("div.lyrics p")[0].get_text()
-  print raw_lyrics
   lyrics = []
   phrase = []
   for line in raw_lyrics.split('\n'):
