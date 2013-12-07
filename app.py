@@ -19,28 +19,9 @@ def lookup_by_song_id(song_id):
 
 def memes(song_file):
     print song_file
-    a = memeMatcher.memeMatcher(song_file).select_and_align_memes()
+    a = memeMatcher.memeMatcher(song_file)
     print a
-    return [
-                {
-                    "image_url": "static/img/all_the_things.png",
-                    "transition_after": 6000,
-                    "top_text": "Like the legend of the pheonix",
-                    "bottom_text": "All ends with beginnings",
-                },
-                {
-                    "image_url": "static/img/doge.jpg",
-                    "transition_after": 7000,
-                    "top_text": "What keeps the planet spinning",
-                    "bottom_text": "The force of love beginning",
-                },
-                {
-                    "image_url": "static/img/confession_bear.jpg",
-                    "transition_after": 10000,
-                    "top_text": "We've come too far to give up who we are",
-                    "bottom_text": "So let's raise the bar and our cups to the star",
-                }
-            ]
+    return a.timings
 
 def intro_time(song_file):
     return 1000
