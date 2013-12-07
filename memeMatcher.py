@@ -22,19 +22,22 @@ def rep_genius_parser(artist='', title=''):
   #EN or something has produced artist and track name
   print rg_search.format(terms=artist+u'+'+title)
   r = requests.get(rg_search.format(terms=artist+u'+'+title))
+  print r
   soup = BeautifulSoup(r.content)
   track_link = soup.select(".song_list li a")[0].get('href')
   r = requests.get(rg_base+track_link)
+  print r
   soup = BeautifulSoup(r.content)
   raw_lyrics = soup.select("div.lyrics p")[0].get_text()
+  print raw_lyrics
   lyrics = []
   phrase = []
   for line in raw_lyrics.split('\n'):
-    if line==u'' and len(phrase)>0:
+    if len(line) == 0 and len(phrase) > 0:
       lyrics.append(phrase)
       phrase = []
       continue
-    if line[0]!= '[':
+    if len(line) > 0 and line[0] != '[':
       #don't add functional phrase labels
       phrase.append(line)
   return lyrics
@@ -57,6 +60,7 @@ class memeMatcher:
 
   def _fetch_EN_analysis(self):
     self.track = pyechonest.track.track_from_filename(self.filepath)
+    print "DONE"
     self.artist = self.track.artist
     self.title = self.track.title
 

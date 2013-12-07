@@ -18,6 +18,9 @@ def lookup_by_song_id(song_id):
     return base_path() + "/tmp/" + filename
 
 def memes(song_file):
+    print song_file
+    a = memeMatcher.memeMatcher(song_file).select_and_align_memes()
+    print a
     return [
                 {
                     "image_url": "static/img/all_the_things.png",
