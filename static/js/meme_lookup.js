@@ -5,25 +5,33 @@ var MemeLookup = (function() {
         var images = [];
         var canvases = [];
 
-        this.on_ready = function() {};
 
-        for (var i = 0; i < memes.length; i++) {
-            var img = Image.new;
-            img.src = memes[i]["image_url"];
-            images.push(img)
+        this.load_memes = function(callback) {
+            for (var i = 0; i < memes.length; i++) {
+                var img = new Image();
+                img.src = memes[i]["image_url"];
+                images.push(img)
+            }
+
+            for (var i = 0; i < images.length; i++) {
+                img = images[i];
+                meme = memes[i];
+                img.onload = load_callback(meme, img, callback);
+            }
         }
 
-        for (var i = 0; i < images.length; i++) {
-            img = images[i];
-            img.onload = function() {
-                var c = new Canvas();
-                c.width = img.width;
-                c.height = img.height;
-                Meme(img.src, c);
-                canvases.push(canvas);
-                if (canvases.length == memes.length) {
-                    that.on_ready();
-                }
+        load_callback = function(meme, image, callback) {
+            return function() {
+                var c = document.createElement('canvas');
+                c.width = this.width;
+                c.height = this.height;
+                image = Meme(this.src, c, meme.top_text, meme.bottom_text, function() {
+                    console.log("pushing");
+                    canvases.push(c.toDataURL());
+                    if (canvases.length == memes.length) {
+                        callback(canvases);
+                    }
+                });
             }
         }
 

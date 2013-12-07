@@ -15,6 +15,12 @@ def memes(song_path):
                     "transition_after": 3000,
                     "top_text": "Music",
                     "bottom_text": "All the things",
+                },
+                {
+                    "image_url": "static/img/all_the_things.png",
+                    "transition_after": 3000,
+                    "top_text": "mus",
+                    "bottom_text": "sux",
                 }
             ]
 

@@ -47,7 +47,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 */
 
-window.Meme = function(image, canvas, top, bottom) {
+window.Meme = function(image, canvas, top, bottom, callback) {
 
     /*
     Default top and bottom
@@ -163,7 +163,6 @@ window.Meme = function(image, canvas, top, bottom) {
     */
 
     image.onload = function() {
-
         // Set dimensions
         setCanvasDimensions(this.width, this.height);
 
@@ -181,7 +180,7 @@ window.Meme = function(image, canvas, top, bottom) {
         // Draw them!
         drawText(top, 'top');
         drawText(bottom, 'bottom');
-
+        console.log("drawn");
+        callback();
     };
-
 };
