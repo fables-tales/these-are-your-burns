@@ -1,13 +1,13 @@
 {
-    "memes": [{
+    "memes": {
         "all-the-things": {
-            "source_iamge": "/static/img/all_the_things.png"
+            "source_image": "/static/img/all_the_things.png"
         },
         "confession-bear":{
-            "source_iamge": "/static/img/confession_bear.jpg"
+            "source_image": "/static/img/confession_bear.jpg"
         },
         "doge":{
-            "source_iamge": "/static/img/doge.jpg"
+            "source_image": "/static/img/doge.jpg"
         }
-      }]
+    }
 }

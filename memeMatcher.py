@@ -100,12 +100,15 @@ class memeMatcher:
     else:
       self.timings = []
       start_section = 0
-    shuffled_img = random.sample(memes, len(memes))
+    shuffled_img = random.sample(memes.keys(), len(memes.keys()))
+    print shuffled_img
     shuffled_phrases = random.sample(self.lyrics, len(self.lyrics))
     for section in self.track.sections[start_section:]:
       #draw cards
-      img = shuffled_img.pop()
-      img_path = img.values()[0].values()[0]
+      key = shuffled_img.pop()
+      img = memes[key]
+      print img
+      img_path = img["source_image"]
       this_phrase = shuffled_phrases.pop()
       while len(this_phrase) < 2:
         if len(shuffled_phrases)==0:
@@ -114,10 +117,11 @@ class memeMatcher:
           this_phrase = shuffled_phrases.pop()
       #reshuffle the decks, if needed
       if len(shuffled_img)==0:
-        shuffled_img = random.sample(memes, len(memes))
+        shuffled_img = random.sample(memes.keys(), len(memes.keys()))
       if len(shuffled_phrases)==0:
         shuffled_phrases = random.sample(self.lyrics, len(self.lyrics))
       lyric_idx = random.sample(range(len(this_phrase)/2),1)[0]*2
+      print img_path
       self.timings.append({"image_url":img_path,
                            "transition_after": int(section['duration']*1000),
                            "top_text": this_phrase[lyric_idx],
