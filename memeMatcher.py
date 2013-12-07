@@ -11,16 +11,17 @@ import sys
 import os
 import unittest
 import requests
-import pyechonest
+import pyechonest.track
 
 from bs4 import BeautifulSoup
 
 
-def rep_genius_parser(artist='', track=''):
+def rep_genius_parser(artist='', title=''):
   rg_base = "http://rapgenius.com"
   rg_search = rg_base+"/search?hide_unexplained_songs=false&q={terms}"
   #EN or something has produced artist and track name
-  r = requests.get(rg_search.format(terms=artist+'+'+track))
+  print rg_search.format(terms=artist+u'+'+title)
+  r = requests.get(rg_search.format(terms=artist+u'+'+title))
   soup = BeautifulSoup(r.content)
   track_link = soup.select(".song_list li a")[0].get('href')
   r = requests.get(rg_base+track_link)
@@ -41,17 +42,17 @@ def rep_genius_parser(artist='', track=''):
 class memeMatcher:
   def __init__(self, filepath):
     self.filepath = filepath
-    _run()
+    self._run()
     
   def _run(self):
     self.status = 'processing file'
-    _fetch_EN_analysis()
+    self._fetch_EN_analysis()
     self.status = 'gathering lyrics'
-    _fetch_lyrics()
+    self._fetch_lyrics()
     self.status = 'gathering cover art'
-    _fetch_cover_art()
+    self._fetch_cover_art()
     self.status = 'aligning to memes'
-    select_and_align_memes()
+    self.select_and_align_memes()
     self.status = 'done'
     
   def _fetch_EN_analysis(self):
@@ -60,7 +61,10 @@ class memeMatcher:
     self.title = self.track.title
   
   def _fetch_lyrics(self):
-    self.lyrics = rep_genius_parser(self.artist, self.track)
+    #mild cleaning
+    artist = self.artist
+    title = self.title.split('/')[0]
+    self.lyrics = rep_genius_parser(artist, title)
   
   def _fetch_cover_art(self):
     pass
