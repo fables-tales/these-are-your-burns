@@ -48,6 +48,8 @@ $(window).ready(function() {
     lookup.load_memes(function(canvases) {
         $("#player").on("canplaythrough", function() {
             $("#player")[0].play();
+            console.log("HIIIIIIIIIIIIIIIIIIIIII");
+            console.log(canvases);
             setTimeout(function() {
                 $('#kenburns').kenburns({
                     images:canvases,
