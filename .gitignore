@@ -3,3 +3,4 @@ db/app.db
 tmp/*.mp3
 tmp/*.wav
 tmp/*.ogg
+*.pyc

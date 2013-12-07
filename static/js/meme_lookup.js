@@ -16,19 +16,21 @@ var MemeLookup = (function() {
             for (var i = 0; i < images.length; i++) {
                 img = images[i];
                 meme = memes[i];
-                img.onload = load_callback(meme, img, callback);
+                img.onload = load_callback(i, meme, img, callback);
             }
         }
 
-        load_callback = function(meme, image, callback) {
+        load_callback = function(index, meme, image, callback) {
             return function() {
                 var c = document.createElement('canvas');
                 c.width = this.width;
                 c.height = this.height;
                 image = Meme(this.src, c, meme.top_text, meme.bottom_text, function() {
-                    console.log("pushing");
-                    canvases.push(c.toDataURL());
+                    canvases.push([index, c.toDataURL()]);
                     if (canvases.length == memes.length) {
+                        sorted = canvases.sort(function(a,b) { return a[0] - b[0]});
+                        canvases = sorted.map(function(element) { return element[1] });
+                        console.log(canvases);
                         callback(canvases);
                     }
                 });
