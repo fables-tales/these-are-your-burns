@@ -32,11 +32,14 @@ $(document).ready( function() {
             {% endif %}
 
             <h2>Upload a file</h2>
-            <form action="/upload" method="POST">
+            <form action="/upload" method="post" enctype="multipart/form-data">
                 <span class="btn btn-default btn-file">
-                    Browse <input type="file">
+                    Browse <input type="file" name="file"></input>
                 </span>
                 <span id="file-label"></span>
+                <br>
+                <br>
+                <input type="submit" value="Upload" class="btn"></input>
             </form>
             <hr/>
             <h2>Pick one of our favourites:</h2>

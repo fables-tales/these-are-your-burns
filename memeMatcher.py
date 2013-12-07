@@ -54,25 +54,25 @@ class memeMatcher:
     self.status = 'aligning to memes'
     self.select_and_align_memes()
     self.status = 'done'
-    
+
   def _fetch_EN_analysis(self):
-    self.track = pyechonest.track.track_from_filename(self.filepath) 
+    self.track = pyechonest.track.track_from_filename(self.filepath)
     self.artist = self.track.artist
     self.title = self.track.title
-  
+
   def _fetch_lyrics(self):
     #mild cleaning
     artist = self.artist
     title = self.title.split('/')[0]
     self.lyrics = rep_genius_parser(artist, title)
-  
+
   def _fetch_cover_art(self):
     pass
-  
+
   def select_and_align_memes(self):
     pass
-    
-  
+
+
 class memeMatcherTests(unittest.TestCase):
 	def setUp(self):
 		self.tester = memeMatcher('')

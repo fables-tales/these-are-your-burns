@@ -1,6 +1,8 @@
 from flask import Flask, request, redirect, session, render_template, Response
 from werkzeug import secure_filename
 
+import memeMatcher
+
 import os
 import json
 import sqlite3
@@ -68,6 +70,7 @@ def play_song(file_name):
 
 @app.route("/upload", methods=["POST"])
 def upload():
+    print request.files
     session["error"] = None
     uploaded_file = request.files['file']
     if allowed_file(uploaded_file.filename):
@@ -101,7 +104,7 @@ def player():
     return read_template("player.html", {
         "song_path": http_song_path,
         "mime_type": "audio/mpeg",
-        "memes":json.dumps(memes(open(song_path))),
+        "memes":json.dumps(memes(song_path)),
         "intro_time": intro_time(open(song_path)),
     })
 
