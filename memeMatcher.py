@@ -41,34 +41,34 @@ def rep_genius_parser(artist='', track=''):
 class memeMatcher:
   def __init__(self, filepath):
     self.filepath = filepath
-    _run()
-    
+    self._run()
+
   def _run(self):
     self.status = 'processing file'
-    _fetch_EN_analysis()
+    self._fetch_EN_analysis()
     self.status = 'gathering lyrics'
-    _fetch_lyrics()
+    self._fetch_lyrics()
     self.status = 'gathering cover art'
-    _fetch_cover_art()
+    self._fetch_cover_art()
     self.status = 'aligning to memes'
-    select_and_align_memes()
+    self.select_and_align_memes()
     self.status = 'done'
-    
+
   def _fetch_EN_analysis(self):
-    self.track = pyechonest.track.track_from_filename(self.filepath) 
+    self.track = pyechonest.track.track_from_filename(self.filepath)
     self.artist = self.track.artist
     self.title = self.track.title
-  
+
   def _fetch_lyrics(self):
     self.lyrics = rep_genius_parser(self.artist, self.track)
-  
+
   def _fetch_cover_art(self):
     pass
-  
+
   def select_and_align_memes(self):
     pass
-    
-  
+
+
 class memeMatcherTests(unittest.TestCase):
 	def setUp(self):
 		self.tester = memeMatcher('')
