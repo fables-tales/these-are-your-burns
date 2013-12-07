@@ -3,3 +3,23 @@ body {
     margin:0px;
     width:100%;
 }
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+    margin-top:1em;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 999px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    background: red;
+    cursor: inherit;
+    display: block;
+}

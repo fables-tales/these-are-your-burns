@@ -147,7 +147,8 @@
         }
 
         function clear() {
-            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.fillStyle = "black";
+            ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         }
 
         function update() {
@@ -184,6 +185,18 @@
 
             function wrap_index(i) {
                 return (i + images.length) % images.length;
+            }
+
+            if (time_passed < fade_time)
+            {
+                var bottom_frame = top_frame - 1;
+                var bottom_frame_start_time = frame_start_time - display_time + fade_time;
+                var bottom_time_passed = update_time - bottom_frame_start_time;
+                if (update_time < fade_time) {
+                    clear();
+                } else {
+                    render_image(wrap_index(bottom_frame), bottom_time_passed / display_time, 1);
+                }
             }
 
             render_image(wrap_index(top_frame), time_passed / display_time(), time_passed / fade_time());

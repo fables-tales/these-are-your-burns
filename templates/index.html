@@ -3,16 +3,46 @@
         <title>
             LOL
         </title>
+
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+        <script type="text/javascript" src="http://markusslima.github.io/bootstrap-filestyle/js/bootstrap-filestyle.min.js"> </script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+        <link href="http://bootswatch.com/cyborg/bootstrap.min.css" rel="stylesheet">
+        <link href="static/css/main.css" rel="stylesheet">
+        <script type="text/javascript">
+            $(document).on('change', '.btn-file :file', function() {
+            var input = $(this),
+            numFiles = input.get(0).files ? input.get(0).files.length : 1,
+            label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [numFiles, label]);
+            });
+$(document).ready( function() {
+    $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
+        $("#file-label").text(label);
+    });
+});
+    </script>
     </head>
     <body>
-        {% if error %}
-            <h1>{{ error }}</h1>
-        {% endif %}
+        <div class="container">
+            <h1>These are your Burns</h1>
+            {% if error %}
+            <p>{{ error }}</p>
+            {% endif %}
 
-        <form action="/upload" method="post" enctype="multipart/form-data">
-            <label for="file">Filename:</label>
-            <input type="file" name="file" id="file"><br>
-            <input type="submit" name="submit" value="Submit">
-        </form>
+            <h2>Upload a file</h2>
+            <form action="/upload" method="POST">
+                <span class="btn btn-default btn-file">
+                    Browse <input type="file">
+                </span>
+                <span id="file-label"></span>
+            </form>
+            <hr/>
+            <h2>Pick one of our favourites:</h2>
+            <ul>
+                <li><a href="/player?song_id=1">Daft punk - get lucky</a></li>
+            </ul>
+        </div>
     </body>
 </html>

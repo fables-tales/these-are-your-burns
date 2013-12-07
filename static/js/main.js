@@ -40,7 +40,6 @@ var Burner = (function() {
 
 $(window).ready(function() {
     var player = $("#player")[0];
-    player.volume = 0;
 
     var burner = new Burner();
     burner.create_canvas();
@@ -48,14 +47,17 @@ $(window).ready(function() {
 
     lookup.load_memes(function(canvases) {
         $("#player").on("canplaythrough", function() {
-            $('#kenburns').kenburns({
-                images:canvases,
-                frames_per_second: 30,
-                display_time: 500,
-                fade_time: 50,
-                zoom: .5,
-                background_color:'#ffffff',
-            });
+            $("#player")[0].play();
+            setTimeout(function() {
+                $('#kenburns').kenburns({
+                    images:canvases,
+                    frames_per_second: 60,
+                    display_time: 500,
+                    fade_time: 1000,
+                    zoom: .6,
+                    background_color:'#ffffff',
+                })
+            }, intro_time);
         });
     });
 });

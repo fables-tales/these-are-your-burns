@@ -15,21 +15,30 @@ def lookup_by_song_id(song_id):
     filename = cur.fetchone()[1]
     return base_path() + "/tmp/" + filename
 
-def memes(song_path):
+def memes(song_file):
     return [
                 {
                     "image_url": "static/img/all_the_things.png",
-                    "transition_after": 500,
-                    "top_text": "Music",
-                    "bottom_text": "All the things",
+                    "transition_after": 6000,
+                    "top_text": "Like the legend of the pheonix",
+                    "bottom_text": "All ends with beginnings",
                 },
                 {
-                    "image_url": "static/img/all_the_things.png",
-                    "transition_after": 3000,
-                    "top_text": "mus",
-                    "bottom_text": "sux",
+                    "image_url": "static/img/doge.jpg",
+                    "transition_after": 7000,
+                    "top_text": "What keeps the planet spinning",
+                    "bottom_text": "The force of love beginning",
+                },
+                {
+                    "image_url": "static/img/confession_bear.jpg",
+                    "transition_after": 10000,
+                    "top_text": "We've come too far to give up who we are",
+                    "bottom_text": "So let's raise the bar and our cups to the star",
                 }
             ]
+
+def intro_time(song_file):
+    return 1000
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -69,6 +78,7 @@ def upload():
         conn = database_connection()
         cur = conn.cursor()
         cur.execute("SELECT * from upload WHERE file_name=?", (filename, ))
+
         row = cur.fetchone()
         if not cur.fetchone():
             cur.execute("INSERT INTO upload (file_name) values(?)", (filename,))
@@ -78,6 +88,7 @@ def upload():
             song_id = str(row[0])
         else:
             song_id = str(row[0])
+
         return redirect("/player?song_id=" + str(song_id))
 
     session["error"] = "uploaded file of wrong type"
@@ -90,7 +101,8 @@ def player():
     return read_template("player.html", {
         "song_path": http_song_path,
         "mime_type": "audio/mpeg",
-        "memes":json.dumps(memes(open(song_path)))
+        "memes":json.dumps(memes(open(song_path))),
+        "intro_time": intro_time(open(song_path)),
     })
 
 if __name__ == "__main__":
