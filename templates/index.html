@@ -44,8 +44,15 @@ $(document).ready( function() {
             <hr/>
             <h2>Pick one of our favourites:</h2>
             <ul>
-                <li><a href="/player?song_id=1">Daft punk - get lucky</a></li>
+                {% for dictionary in favourites %}
+                <li><a href="/player?song_id={{dictionary['id']}}">
+                    {{ dictionary["artist"] }} - {{dictionary["title"]}}
+                </a></li>
+                {% endfor %}
             </ul>
+        </div>
+        <div id="fun-and-plausible">
+            <a href="http://funandplausible.com">A Fun and Plausible Soultion</a>
         </div>
     </body>
 </html>

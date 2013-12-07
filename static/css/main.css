@@ -26,3 +26,12 @@ body {
 
 #file-label {
 }
+
+#fun-and-plausible {
+    position:absolute;
+    bottom:0;
+    right:0;
+    background-color:rgba(0, 0, 0, .6);
+    width:100px;
+    padding:1em;
+}
