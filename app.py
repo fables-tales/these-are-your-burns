@@ -8,6 +8,13 @@ import sqlite3
 
 app = Flask(__name__)
 
+def lookup_by_song_id(song_id):
+    conn = database_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * from upload WHERE id=?", (song_id, ))
+    filename = cur.fetchone()[1]
+    return base_path() + "/tmp/" + filename
+
 def memes(song_path):
     return [
                 {
@@ -59,15 +66,27 @@ def upload():
         song_path = base_path() + "/tmp/" + filename
         uploaded_file.save(song_path)
         session["song_path"] = song_path
-        return redirect("/player")
+        conn = database_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT * from upload WHERE file_name=?", (filename, ))
+        row = cur.fetchone()
+        if not cur.fetchone():
+            cur.execute("INSERT INTO upload (file_name) values(?)", (filename,))
+            conn.commit()
+            cur.execute("SELECT id from upload WHERE file_name=?", (filename,))
+            row = cur.fetchone()
+            song_id = str(row[0])
+        else:
+            song_id = str(row[0])
+        return redirect("/player?song_id=" + str(song_id))
 
     session["error"] = "uploaded file of wrong type"
     return redirect("/")
 
 @app.route("/player", methods=["GET"])
 def player():
-    song_path = session["song_path"]
-    http_song_path = "/audio_files/" + os.path.split(session["song_path"])[-1]
+    song_path = lookup_by_song_id(request.args.get("song_id"))
+    http_song_path = "/audio_files/" + os.path.split(song_path)[-1]
     return read_template("player.html", {
         "song_path": http_song_path,
         "mime_type": "audio/mpeg",
