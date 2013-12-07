@@ -4,40 +4,40 @@
             "source_image": "/static/img/all_the_things.png"
         },
         "confession-bear":{
-            "source_image": "/static/img/confession_bear.jpg"
+            "source_image": "/static/img/confession_bear.jpg.png"
         },
         "doge":{
-            "source_image": "/static/img/doge.jpg"
+            "source_image": "/static/img/doge.jpg.png"
         },
         "doge":{
-            "source_image": "/static/img/doge.jpg"
+            "source_image": "/static/img/doge.jpg.png"
         },
         "awesome_face": {
             "source_image": "/static/img/awesome_face.png"
         },
         "cheezburger": {
-            "source_image": "/static/img/can_haz_cheesburger.jpg"
+            "source_image": "/static/img/can_haz_cheesburger.jpg.png"
         },
         "chuck": {
-            "source_image": "/static/img/chuck.jpg"
+            "source_image": "/static/img/chuck.jpg.png"
         },
         "girl": {
-            "source_image": "/static/img/disaster-girl.jpg"
+            "source_image": "/static/img/disaster-girl.jpg.png"
         },
         "doctor_evil": {
-            "source_image": "/static/img/doctor_evil.jpg"
+            "source_image": "/static/img/doctor_evil.jpg.png"
         },
         "insanity_wolf": {
-            "source_image": "/static/img/insanity_wolf.jpg"
+            "source_image": "/static/img/insanity_wolf.jpg.png"
         },
         "lazer": {
-            "source_image": "/static/img/lazer.jpg"
+            "source_image": "/static/img/lazer.jpg.png"
         },
         "long_cat": {
             "source_image": "/static/img/long_cat.png"
         },
         "my_little_pony": {
-            "source_image": "/static/img/my_little_pony.jpg"
+            "source_image": "/static/img/my_little_pony.jpg.png"
         },
         "pinkie_pie": {
             "source_image": "/static/img/my_little_pony_pinkie_pie.png"
@@ -46,13 +46,13 @@
             "source_image": "/static/img/picard.png"
         },
         "success_kid": {
-            "source_image": "/static/img/success_kid.jpg"
+            "source_image": "/static/img/success_kid.jpg.png"
         },
         "too_damn_high": {
-            "source_image": "/static/img/too_damn_high.jpg"
+            "source_image": "/static/img/too_damn_high.jpg.png"
         },
         "woop_face": {
-            "source_image": "/static/img/woop_face.jpg"
+            "source_image": "/static/img/woop_face.jpg.png"
         }
     }
 }
