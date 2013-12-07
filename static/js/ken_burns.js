@@ -155,26 +155,35 @@
             var update_time = get_time();
             clear();
 
-            var top_frame = Math.floor(update_time / (display_time() - fade_time()));
-            var frame_start_time = top_frame * (display_time() - fade_time());
+            function frames_in(update_time) {
+                var i = 0;
+                while (true) {
+                    var time = memes[i % memes.length].transition_after;
+                    if (update_time < time) {
+                        return i;
+                    }
+                    update_time -= time;
+                    i++;
+                }
+            }
+
+            function frame_start(frame_index) {
+                var cumulative = 0;
+                for (var k = 0; k < frame_index; k++) {
+                    cumulative += memes[k % memes.length].transition_after
+                }
+
+                return cumulative;
+            }
+
+            var top_frame = frames_in(update_time);
+            var frame_start_time = frame_start(top_frame);
             var time_passed = update_time - frame_start_time;
+
+            old_opts.display_time = memes[top_frame % memes.length].transition_after;
 
             function wrap_index(i) {
                 return (i + images.length) % images.length;
-            }
-
-            if (time_passed < fade_time())
-            {
-                var bottom_frame = top_frame - 1;
-                var bottom_frame_start_time = frame_start_time - display_time() + fade_time();
-                var bottom_time_passed = update_time - bottom_frame_start_time;
-                if (update_time < fade_time()) {
-                    clear();
-                } else {
-                    render_image(wrap_index(bottom_frame), bottom_time_passed / display_time(), 1);
-                }
-            } else {
-                old_opts.display_time = memes[top_frame % memes.length].transition_after
             }
 
             render_image(wrap_index(top_frame), time_passed / display_time(), time_passed / fade_time());
