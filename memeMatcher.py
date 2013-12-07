@@ -14,8 +14,11 @@ import json
 import random
 import requests
 import pyechonest.track
+import pygn
 
 from bs4 import BeautifulSoup
+
+GRACENOTE_KEY = os.environ['GRACENOTE_KEY']
 
 def base_path():
     return os.path.dirname(os.path.realpath(__file__))
@@ -75,15 +78,31 @@ class memeMatcher:
     self.lyrics = rep_genius_parser(artist, title)
 
   def _fetch_cover_art(self):
-    pass
+    clientID = GRACENOTE_KEY
+    userID = pygn.register(clientID)
+    metadata = pygn.search(clientID=clientID, userID=userID, artist=self.artist, track=self.title.split('/')[0])
+    try:
+      self.album_art_url = metadata['album_art_url']
+    except KeyError:
+      print 'for', self.artist, ':', self.track, "gracenote doesn't have any album art"
+      self.album_art_url = None
 
   def select_and_align_memes(self):
     with open(os.path.join(base_path(),'images.json')) as rh:
       memes = json.loads(rh.read())['memes']
-    self.timings = []
+    if self.album_art_url:
+      self.timings = [{"image_url":self.album_art_url,
+                        "transition_after": int(self.track.sections[0]['duration']*1000),
+                        "top_text": '',
+                        "bottom_text": '',
+                      }] 
+      start_section = 1
+    else:
+      self.timings = []
+      start_section = 0
     shuffled_img = random.sample(memes, len(memes))
     shuffled_phrases = random.sample(self.lyrics, len(self.lyrics))
-    for section in self.track.sections:
+    for section in self.track.sections[start_section:]:
       #draw cards
       img = shuffled_img.pop()
       img_path = img.values()[0].values()[0]
