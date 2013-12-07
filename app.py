@@ -37,10 +37,10 @@ def read_template(template_name, params={}):
     return render_template(template_name, **params)
 
 def database_connection():
-    if not os.path.isfile('db/app.db'):
+    if not os.path.isfile(base_path() + '/db/app.db'):
         raise "YOUR DATABASE DOESNT EXIST FOOL, RUN db/migrate.sh"
 
-    return sqlite3.connect('db/app.db')
+    return sqlite3.connect(base_path() + '/db/app.db')
 
 def favourite_tracks():
     ids = [1]
@@ -108,11 +108,12 @@ def player():
         "intro_time": intro_time(open(song_path)),
     })
 
+upload_folder = base_path() + "/tmp/"
+UPLOAD_FOLDER = ''
+ALLOWED_EXTENSIONS = set(["mp3", "wav", "ogg", "m4a"])
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.secret_key = "adofijqweofijsdfklgjasdflidqogjwiodf:w"
+app.debug = True
+
 if __name__ == "__main__":
-    upload_folder = base_path() + "/tmp/"
-    UPLOAD_FOLDER = ''
-    ALLOWED_EXTENSIONS = set(["mp3", "wav", "ogg", "m4a"])
-    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-    app.secret_key = "adofijqweofijsdfklgjasdflidqogjwiodf:w"
-    app.debug = True
-    app.run()
+    app.run(processes=3)

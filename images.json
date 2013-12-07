@@ -8,6 +8,51 @@
         },
         "doge":{
             "source_image": "/static/img/doge.jpg"
+        },
+        "doge":{
+            "source_image": "/static/img/doge.jpg"
+        },
+        "awesome_face": {
+            "source_image": "/static/img/awesome_face.png"
+        },
+        "cheezburger": {
+            "source_image": "/static/img/can_haz_cheesburger.jpg"
+        },
+        "chuck": {
+            "source_image": "/static/img/chuck.jpg"
+        },
+        "girl": {
+            "source_image": "/static/img/disaster-girl.jpg"
+        },
+        "doctor_evil": {
+            "source_image": "/static/img/doctor_evil.jpg"
+        },
+        "insanity_wolf": {
+            "source_image": "/static/img/insanity_wolf.jpg"
+        },
+        "lazer": {
+            "source_image": "/static/img/lazer.jpg"
+        },
+        "long_cat": {
+            "source_image": "/static/img/long_cat.png"
+        },
+        "my_little_pony": {
+            "source_image": "/static/img/my_little_pony.jpg"
+        },
+        "pinkie_pie": {
+            "source_image": "/static/img/my_little_pony_pinkie_pie.png"
+        },
+        "pickard": {
+            "source_image": "/static/img/picard.png"
+        },
+        "success_kid": {
+            "source_image": "/static/img/success_kid.jpg"
+        },
+        "too_damn_high": {
+            "source_image": "/static/img/too_damn_high.jpg"
+        },
+        "woop_face": {
+            "source_image": "/static/img/woop_face.jpg"
         }
     }
 }
