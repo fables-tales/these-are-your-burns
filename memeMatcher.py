@@ -21,6 +21,7 @@ import pyechonest.track
 
 import pygn
 
+import psycopg2 as dbapi2
 from itertools import izip_longest
 from bs4 import BeautifulSoup
 
@@ -31,7 +32,7 @@ def database_connection():
     if not os.path.isfile(base_path() + '/db/app.db'):
         raise "YOUR DATABASE DOESNT EXIST FOOL, RUN db/migrate.sh"
 
-    return sqlite3.connect(base_path() + '/db/app.db')
+    return dbapi2.connect (database="burns", user="burns", password="lol")
 
 def grouper(n, iterable, fillvalue=None):
     "grouper(3, 'ABCDEFG', 'x') --> ABC DEF Gxx"
@@ -125,9 +126,9 @@ class memeMatcher:
       try:
         self.song_id
       except AttributeError:
-        cur.execute("SELECT id from upload WHERE file_name=?", (self.filename, ))
+        cur.execute("SELECT id from upload WHERE file_name=%s", (self.filename, ))
         self.song_id = cur.fetchone()[0]
-      cur.execute("SELECT json from timings WHERE id=? AND sync_method=?", (self.song_id, sync_method,))
+      cur.execute("SELECT json from timings WHERE id=%s AND sync_method=%s", (self.song_id, sync_method,))
       return json.loads(cur.fetchone()[0])
 
   def serialize_timing(self, sync_method, timing):
@@ -136,9 +137,9 @@ class memeMatcher:
       try:
         self.song_id
       except AttributeError:
-        cur.execute("SELECT id from upload WHERE file_name=?", (self.filename, ))
+        cur.execute("SELECT id from upload WHERE file_name=%s", (self.filename, ))
         self.song_id = cur.fetchone()[0]
-      cur.execute("INSERT INTO timings (id, sync_method, json) VALUES (?, ?, ?)", (self.song_id, sync_method, json.dumps(timing)))
+      cur.execute("INSERT INTO timings (id, sync_method, json) VALUES (%s, %s, %s)", (self.song_id, sync_method, json.dumps(timing)))
       conn.commit()
   
   def select_and_align_memes(self, method='linear_seq', intro_num_sections = 1, **kwargs):

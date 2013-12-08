@@ -1,6 +1,7 @@
 from flask import Flask, request, redirect, session, render_template, Response
 from werkzeug import secure_filename
 import time
+import psycopg2 as dbapi2
 
 import memeMatcher
 
@@ -14,7 +15,7 @@ app = Flask(__name__)
 def lookup_by_song_id(song_id):
     conn = database_connection()
     cur = conn.cursor()
-    cur.execute("SELECT * from upload WHERE id=?", (song_id, ))
+    cur.execute("SELECT * from upload WHERE id=%s", (song_id, ))
     filename = cur.fetchone()[1]
     return base_path() + "/tmp/" + filename
 
@@ -39,7 +40,7 @@ def database_connection():
     if not os.path.isfile(base_path() + '/db/app.db'):
         raise "YOUR DATABASE DOESNT EXIST FOOL, RUN db/migrate.sh"
 
-    return sqlite3.connect(base_path() + '/db/app.db')
+    return dbapi2.connect (database="burns", user="burns", password="lol")
 
 def favourite_tracks():
     ids = [1, 8, 9]
@@ -109,13 +110,13 @@ def upload():
         session["song_path"] = song_path
         conn = database_connection()
         cur = conn.cursor()
-        cur.execute("SELECT * from upload WHERE file_name=?", (filename, ))
+        cur.execute("SELECT * from upload WHERE file_name=%s", (filename, ))
 
         row = cur.fetchone()
         if not cur.fetchone():
-            cur.execute("INSERT INTO upload (file_name) values(?)", (filename,))
+            cur.execute("INSERT INTO upload (file_name) values(%s)", (filename,))
             conn.commit()
-            cur.execute("SELECT id from upload WHERE file_name=?", (filename,))
+            cur.execute("SELECT id from upload WHERE file_name=%s", (filename,))
             row = cur.fetchone()
             song_id = str(row[0])
         else:
