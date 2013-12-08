@@ -49,6 +49,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 window.Meme = function(image, canvas, top, bottom, callback) {
 
+    if (image.width < 600) {
+        var ratio = 600/image.width;
+        image.width = 600;
+        image.height = image.height * ratio;
+    }
     /*
     Default top and bottom
     */

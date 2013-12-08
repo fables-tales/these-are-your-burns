@@ -35,3 +35,12 @@ body {
     text-align:right;
     padding:1em;
 }
+
+#social-media {
+    position:absolute;
+    top:0;
+    right:0;
+    background-color:rgba(0, 0, 0, .6);
+    text-align:right;
+    padding:1em;
+}

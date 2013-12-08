@@ -100,7 +100,7 @@ def player():
     song_path = lookup_by_song_id(request.args.get("song_id"))
     http_song_path = "/audio_files/" + os.path.split(song_path)[-1]
     meme_list, title, artist = memes(song_path)
-    text = title + " by: " + artist
+    text = '"' + title + '" by ' + artist
     if len(text) > 50:
         text = ""
     return read_template("player.html", {

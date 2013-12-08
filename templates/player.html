@@ -13,8 +13,17 @@
         <script src="/static/js/main.js"></script>
         <link href="http://bootswatch.com/cyborg/bootstrap.min.css" rel="stylesheet">
         <link type="text/css" rel="stylesheet" href="static/css/main.css"></link>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=499070126825977";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+    </script>
     </head>
     <body bgcolor="#000">
+        <div id="fb-root"></div>
         <div id="canvas-holder">
         </div>
         <audio controls id="player" preload="auto" style="display:none;" oncanplaythrough="play_audio" oncanplay="play_audio" onloadeddata="play_audio">
@@ -22,12 +31,13 @@
         Your browser does not support the audio tag.
         </audio>
         <div id="fun-and-plausible">
-            <a href="http://funandplausible.com">A Fun and Plausible Solution</a>
+            <a href="http://funandplausible.com">A Fun and Plausible Solution</a> by <a href="https://twitter.com/alsothings">Ben</a> and <a href="https://twitter.com/samphippen">Sam</a>
         </div>
 
-        <div id="social media">
+        <div id="social-media">
             <a href="https://twitter.com/share" class="twitter-share-button" data-text="I've just Burns'd {{ flavour }}" data-via="funandplausible" data-hashtags="musichackday">Tweet</a>
             <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            <script type="text/javascript" src="http://www.reddit.com/static/button/button1.js"></script>
         </div>
     </body>
 </html>
