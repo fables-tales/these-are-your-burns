@@ -15,6 +15,7 @@ import json
 import random
 import md5
 
+import sqlite3
 import requests
 import pyechonest.track
 
@@ -26,6 +27,11 @@ from bs4 import BeautifulSoup
 GRACENOTE_KEY = os.environ['GRACENOTE_KEY']
 
 
+def database_connection():
+    if not os.path.isfile(base_path() + '/db/app.db'):
+        raise "YOUR DATABASE DOESNT EXIST FOOL, RUN db/migrate.sh"
+
+    return sqlite3.connect(base_path() + '/db/app.db')
 
 def grouper(n, iterable, fillvalue=None):
     "grouper(3, 'ABCDEFG', 'x') --> ABC DEF Gxx"
@@ -63,18 +69,26 @@ def rep_genius_parser(artist='', title=''):
 class memeMatcher:
   def __init__(self, filepath):
     self.filepath = filepath
+    self.filename = os.path.split(filepath)[-1]
     self._run()
 
   def _run(self):
+    sync_method = 'linear_seq'
     self.status = 'processing file'
     self._fetch_EN_analysis()
-    self.status = 'gathering lyrics'
-    self._fetch_lyrics()
-    self.status = 'gathering cover art'
-    self._fetch_cover_art()
-    self.status = 'aligning to memes'
-    self.select_and_align_memes()
-    self.status = 'done'
+    try:
+      #cache grab
+      self.deserialize_timing(sync_method)
+    except TypeError:
+      #otherwise make a new one
+      self.status = 'gathering lyrics'
+      self._fetch_lyrics()
+      self.status = 'gathering cover art'
+      self._fetch_cover_art()
+      self.status = 'aligning to memes'
+      self.select_and_align_memes()
+      self.status = 'done'
+      self.serialize_timing(sync_method, self.timings)
 
   def _fetch_EN_analysis(self):
     self.track = pyechonest.track.track_from_filename(self.filepath)
@@ -104,7 +118,29 @@ class memeMatcher:
     except KeyError:
       print 'for', self.artist, ':', self.track, "gracenote doesn't have any album art"
       self.album_art = None
+  
+  def deserialize_timing(self, sync_method):
+      conn = database_connection()
+      cur = conn.cursor()
+      try:
+        self.song_id
+      except AttributeError:
+        cur.execute("SELECT id from upload WHERE file_name=?", (self.filename, ))
+        self.song_id = cur.fetchone()[0]
+      cur.execute("SELECT json from timings WHERE id=? AND sync_method=?", (self.song_id, sync_method,))
+      return json.loads(cur.fetchone()[0])
 
+  def serialize_timing(self, sync_method, timing):
+      conn = database_connection()
+      cur = conn.cursor()
+      try:
+        self.song_id
+      except AttributeError:
+        cur.execute("SELECT id from upload WHERE file_name=?", (self.filename, ))
+        self.song_id = cur.fetchone()[0]
+      cur.execute("INSERT INTO timings (id, sync_method, json) VALUES (?, ?, ?)", (self.song_id, sync_method, json.dumps(timing)))
+      conn.commit()
+  
   def select_and_align_memes(self, method='linear_seq', intro_num_sections = 1, **kwargs):
     with open(os.path.join(base_path(),'images.json')) as rh:
       memes = json.loads(rh.read())['memes']
