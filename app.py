@@ -1,5 +1,6 @@
 from flask import Flask, request, redirect, session, render_template, Response
 from werkzeug import secure_filename
+import time
 
 import memeMatcher
 
@@ -70,15 +71,24 @@ def most_recent_tracks():
 
     return results
 
+
+cache, last_cache_at = None, 0
+
 @app.route("/")
 def hello():
-    database_connection()
-    return read_template("index.html",
+    global cache
+    global last_cache_at
+    t = time.time()
+    if t - last_cache_at > 600:
+        cache = read_template("index.html",
             {
                 "error": session.get("error", None),
                 "favourites": favourite_tracks(),
                 "recent": most_recent_tracks(),
             })
+
+        last_cache_at = time.time()
+    return cache
 
 @app.route("/audio_files/<file_name>")
 def play_song(file_name):
