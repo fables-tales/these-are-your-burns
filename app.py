@@ -71,8 +71,8 @@ def most_recent_tracks():
 
     return results
 
-
 cache, last_cache_at = None, 0
+
 
 @app.route("/")
 def hello():
@@ -97,6 +97,8 @@ def play_song(file_name):
 
 @app.route("/upload", methods=["POST"])
 def upload():
+    global last_cache_at
+    last_cache_at = 0
     print request.files
     session["error"] = None
     uploaded_file = request.files['file']
