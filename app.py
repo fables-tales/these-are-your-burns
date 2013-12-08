@@ -116,4 +116,4 @@ app.secret_key = "adofijqweofijsdfklgjasdflidqogjwiodf:w"
 app.debug = True
 
 if __name__ == "__main__":
-    app.run(processes=3)
+    app.run(threaded=True)
