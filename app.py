@@ -18,10 +18,8 @@ def lookup_by_song_id(song_id):
     return base_path() + "/tmp/" + filename
 
 def memes(song_file):
-    print song_file
     a = memeMatcher.memeMatcher(song_file)
-    print a
-    return a.timings
+    return a.timings, a.title, a.artist
 
 def intro_time(song_file):
     return 1000
@@ -101,10 +99,15 @@ def upload():
 def player():
     song_path = lookup_by_song_id(request.args.get("song_id"))
     http_song_path = "/audio_files/" + os.path.split(song_path)[-1]
+    meme_list, title, artist = memes(song_path)
+    text = title + " by: " + artist
+    if len(text) > 50:
+        text = ""
     return read_template("player.html", {
         "song_path": http_song_path,
         "mime_type": "audio/mpeg",
-        "memes":json.dumps(memes(song_path)),
+        "memes":json.dumps(meme_list),
+        "flavour":text,
         "intro_time": intro_time(open(song_path)),
     })
 

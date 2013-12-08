@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>LOL</title>
+        <title>These are your Burns - A Fun and Plausible Solution</title>
         <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
         <script type="text/javascript">
             var memes = {{ memes | safe }}
@@ -17,12 +17,17 @@
     <body bgcolor="#000">
         <div id="canvas-holder">
         </div>
-        <audio controls id="player" preload="auto" style="display:none;">
+        <audio controls id="player" preload="auto" style="display:none;" oncanplaythrough="play_audio" oncanplay="play_audio" onloadeddata="play_audio">
         <source src="{{ song_path }}" type="{{ mime_type }}">
         Your browser does not support the audio tag.
         </audio>
         <div id="fun-and-plausible">
             <a href="http://funandplausible.com">A Fun and Plausible Solution</a>
+        </div>
+
+        <div id="social media">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-text="I've just Burns'd {{ flavour }}" data-via="funandplausible" data-hashtags="musichackday">Tweet</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
         </div>
     </body>
 </html>

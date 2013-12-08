@@ -38,28 +38,32 @@ var Burner = (function() {
     }
 }());
 
-$(window).ready(function() {
+function play_audio() {
+    var playable = false;
     var player = $("#player")[0];
-
+    console.log("yo");
     var burner = new Burner();
     burner.create_canvas();
     var lookup = new MemeLookup(memes);
-
     lookup.load_memes(function(canvases) {
-        $("#player").on("canplaythrough", function() {
-            $("#player")[0].play();
-            console.log("HIIIIIIIIIIIIIIIIIIIIII");
-            console.log(canvases);
-            setTimeout(function() {
-                $('#kenburns').kenburns({
-                    images:canvases,
-                    frames_per_second: 60,
-                    display_time: 500,
-                    fade_time: 1000,
-                    zoom: .6,
-                    background_color:'#ffffff',
-                })
-            }, intro_time);
-        });
+        $("#player")[0].play();
+        console.log("HIIIIIIIIIIIIIIIIIIIIII");
+        console.log(canvases);
+        setTimeout(function() {
+            console.log("GO");
+            $('#kenburns').kenburns({
+                images:canvases,
+                frames_per_second: 60,
+                display_time: 500,
+                fade_time: 1000,
+                zoom: .6,
+                background_color:'#ffffff',
+            })
+        }, intro_time);
     });
+}
+
+$(window).ready(function() {
+    $("#player")[0].load();
+    play_audio();
 });
