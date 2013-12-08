@@ -34,12 +34,12 @@ $(document).ready( function() {
             <h2>Upload a file</h2>
             <form action="/upload" method="post" enctype="multipart/form-data">
                 <span class="btn btn-default btn-file">
-                    Browse <input type="file" name="file"></input>
+                    Select file <input type="file" name="file"></input>
                 </span>
                 <span id="file-label"></span>
                 <br>
                 <br>
-                <input type="submit" value="Upload" class="btn"></input>
+                <input type="submit" value="Go!" class="btn btn-primary"></input>
             </form>
             <hr/>
             <h2>Pick one of our favourites:</h2>
@@ -50,9 +50,17 @@ $(document).ready( function() {
                 </a></li>
                 {% endfor %}
             </ul>
+            <h2>Recently uploaded tracks:</h2>
+            <ul>
+                {% for dictionary in recent %}
+                <li><a href="/player?song_id={{dictionary['id']}}">
+                    {{ dictionary["artist"] }} - {{dictionary["title"]}}
+                </a></li>
+                {% endfor %}
+            </ul>
         </div>
         <div id="fun-and-plausible">
-            <a href="http://funandplausible.com">A Fun and Plausible Solution</a>
+            <a href="http://funandplausible.com">A Fun and Plausible Solution</a> by <a href="https://twitter.com/alsothings">Ben</a> and <a href="https://twitter.com/samphippen">Sam</a>
         </div>
     </body>
 </html>

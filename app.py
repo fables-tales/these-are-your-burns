@@ -22,7 +22,7 @@ def memes(song_file):
     return a.timings, a.title, a.artist
 
 def intro_time(song_file):
-    return 1000
+    return 0
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -41,7 +41,7 @@ def database_connection():
     return sqlite3.connect(base_path() + '/db/app.db')
 
 def favourite_tracks():
-    ids = [1]
+    ids = [1, 8, 9]
     results = []
     for oid in ids:
         song_file = lookup_by_song_id(oid)
@@ -52,6 +52,24 @@ def favourite_tracks():
 
     return results
 
+
+def most_recent_tracks():
+    conn = database_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * from upload order by id DESC limit 5")
+    results = []
+    for row in cur:
+        song_file = base_path() + "/tmp/" + row[1]
+        try:
+            a = memeMatcher.memeMatcher(song_file)
+            artist = a.artist
+            title = a.title
+            results.append({"id": row[0], "artist": artist, "title":title})
+        except Exception as e:
+            print e
+
+    return results
+
 @app.route("/")
 def hello():
     database_connection()
@@ -59,6 +77,7 @@ def hello():
             {
                 "error": session.get("error", None),
                 "favourites": favourite_tracks(),
+                "recent": most_recent_tracks(),
             })
 
 @app.route("/audio_files/<file_name>")
