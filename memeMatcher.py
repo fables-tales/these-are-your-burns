@@ -105,16 +105,16 @@ class memeMatcher:
       print 'for', self.artist, ':', self.track, "gracenote doesn't have any album art"
       self.album_art = None
 
-  def select_and_align_memes(self, method='maximum_spread'):
+  def select_and_align_memes(self, method='linear_seq', intro_num_sections = 1, **kwargs):
     with open(os.path.join(base_path(),'images.json')) as rh:
       memes = json.loads(rh.read())['memes']
       if self.album_art:
         self.timings = [{"image_url":self.album_art,
-                          "transition_after": int(self.track.sections[0]['duration']*1000),
+                          "transition_after": int(sum([sect[u'duration'] for sect in self.track.sections[:intro_num_sections]])*1000),
                           "top_text": '',
                           "bottom_text": '',
                         }] 
-        start_section = 1
+        start_section = intro_num_sections
       else:
         self.timings = []
         start_section = 0
@@ -122,8 +122,42 @@ class memeMatcher:
         self.random_shuffle_memes(memes, start_section)
       elif method == 'maximum_spread':
         self.maximum_spread(memes, start_section)
+      elif method == 'linear_seq':
+        self.linear_sequence_memes(memes, start_section, **kwargs)
       else:
         raise ValueError('unknown alignment method')
+      print self.timings
+  
+  def linear_sequence_memes(self, memes, start_section, first_block=4, second_block=4):
+    shuffled_img = random.sample(memes.keys(), len(memes.keys()))
+    flat_lyrics = []
+    for lyric_block in self.lyrics:
+      if len(lyric_block) % 2 == 1:
+        if len(lyric_block) > 4:
+          lyric_block.pop(-3)
+        else:
+          lyric_block.pop(-1)
+      flat_lyrics += lyric_block
+    bars_left = [bar for bar in self.track.bars if (bar[u'start']>=self.track.sections[start_section][u'start'])]
+    for some_bars in grouper(first_block+second_block, bars_left):
+      for block_length in (first_block, second_block):
+        key = shuffled_img.pop()
+        img = memes[key]
+        img_path = img["source_image"]
+        if len(shuffled_img)==0:
+          shuffled_img = random.sample(memes.keys(), len(memes.keys()))
+        if len(flat_lyrics) < 2:
+          flat_lyrics = reduce(lambda x,y:x+y, self.lyrics)
+        top_line = flat_lyrics.pop(0)
+        bottom_line = flat_lyrics.pop(0)
+        print "first:", first_block, "second:", second_block, 'current:', block_length, "left:", len(some_bars)
+        duration = int(sum([bar[u'duration'] for bar in some_bars[:block_length] if bar != None])*1000)
+        some_bars = some_bars[block_length:] #trim the bars that were used
+        self.timings.append({"image_url":img_path,
+                             "transition_after": duration,
+                             "top_text": top_line,
+                             "bottom_text": bottom_line,
+                            })
   
   def random_shuffle_memes(self, memes, start_section):
     shuffled_img = random.sample(memes.keys(), len(memes.keys()))
@@ -196,10 +230,6 @@ class memeMatcher:
                         "top_text": '',
                         "bottom_text": '',
                         })
-    
-    print self.track.sections
-    print self.track.bars
-    print self.timings
     
 class memeMatcherTests(unittest.TestCase):
   def setUp(self):
