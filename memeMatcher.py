@@ -87,7 +87,7 @@ class memeMatcher:
     artist = self.artist
     title = self.title.split('/')[0]
     if " feat" in title:
-      title = " ".join(title.split(" feat"))
+        title = " ".join(title.split(" feat")[:-1])
     self.lyrics = rep_genius_parser(artist, title)
 
   def _fetch_cover_art(self):
