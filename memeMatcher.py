@@ -78,7 +78,7 @@ class memeMatcher:
     self._fetch_EN_analysis()
     try:
       #cache grab
-      self.deserialize_timing(sync_method)
+      self.timings = self.deserialize_timing(sync_method)
     except TypeError:
       #otherwise make a new one
       self.status = 'gathering lyrics'
