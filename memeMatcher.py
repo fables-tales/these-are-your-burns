@@ -103,6 +103,13 @@ class memeMatcher:
     title = self.title.split('/')[0]
     if " feat" in title:
         title = " ".join(title.split(" feat")[:-1])
+
+    if " - " in title:
+        title = " ".join(title.split(" - ")[:-1])
+
+    if "(" in title:
+        title = title.split("(")[0]
+
     self.lyrics = rep_genius_parser(artist, title)
 
   def _fetch_cover_art(self):
@@ -116,7 +123,7 @@ class memeMatcher:
         with open(artist_pic, 'wb') as wh:
           wh.write(r.content) 
       self.album_art = '/audio_files/'+os.path.split(artist_pic)[1]
-    except KeyError:
+    except (KeyError, requests.exceptions.MissingSchema):
       print 'for', self.artist, ':', self.track, "gracenote doesn't have any album art"
       self.album_art = None
   

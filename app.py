@@ -43,7 +43,7 @@ def database_connection():
     return dbapi2.connect (database="burns", user="burns", password="lol")
 
 def favourite_tracks():
-    ids = [1, 8, 9]
+    ids = [1, 8, 9, 106, 109]
     results = []
     for oid in ids:
         song_file = lookup_by_song_id(oid)

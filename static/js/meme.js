@@ -118,7 +118,6 @@ window.Meme = function(image, canvas, top, bottom, callback) {
 
         // Should we split it into multiple lines?
         if (context.measureText(text).width > (canvas.width * 1.1)) {
-
             // Split word by word
             var words = text.split(' ');
             var wordsLength = words.length;
