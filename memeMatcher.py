@@ -29,7 +29,7 @@ GRACENOTE_KEY = os.environ['GRACENOTE_KEY']
 
 
 def database_connection():
-    return dbapi2.connect (database="burns", user="burns", password="lol")
+    return dbapi2.connect (database="burns", user="burns", password="lol", host="127.0.0.1")
 
 def grouper(n, iterable, fillvalue=None):
     "grouper(3, 'ABCDEFG', 'x') --> ABC DEF Gxx"

@@ -37,7 +37,7 @@ def read_template(template_name, params={}):
     return render_template(template_name, **params)
 
 def database_connection():
-    return dbapi2.connect (database="burns", user="burns", password="lol")
+    return dbapi2.connect (database="burns", user="burns", password="lol", host="127.0.0.1")
 
 def favourite_tracks():
     ids = [1, 8, 9, 106, 109]
