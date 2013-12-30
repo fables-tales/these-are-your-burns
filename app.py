@@ -65,7 +65,8 @@ def most_recent_tracks():
             title = a.title
             results.append({"id": row[0], "artist": artist, "title":title})
         except Exception as e:
-            print e
+            pass
+            #print e
 
     return results
 
@@ -97,7 +98,7 @@ def play_song(file_name):
 def upload():
     global last_cache_at
     last_cache_at = 0
-    print request.files
+    #print request.files
     session["error"] = None
     uploaded_file = request.files['file']
     if allowed_file(uploaded_file.filename):

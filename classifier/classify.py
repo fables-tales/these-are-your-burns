@@ -29,6 +29,3 @@ if __name__ == "__main__":
     line_pairs = []
     for i in xrange(1, len(f), 2):
         line_pairs.append(f[i-1].split(" ") + f[i].split(" "))
-
-    for pair in line_pairs:
-        print classify(pair)

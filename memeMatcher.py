@@ -43,13 +43,10 @@ def rep_genius_parser(artist='', title=''):
   rg_base = "http://rapgenius.com"
   rg_search = rg_base+"/search?hide_unexplained_songs=false&q={terms}"
   #EN or something has produced artist and track name
-  print rg_search.format(terms=artist+u'+'+title)
   r = requests.get(rg_search.format(terms=artist+u'+'+title))
-  print r
   soup = BeautifulSoup(r.content)
   track_link = soup.select(".song_list li a")[0].get('href')
   r = requests.get(rg_base+track_link)
-  print r
   soup = BeautifulSoup(r.content)
   raw_lyrics = soup.select("div.lyrics p")[0].get_text()
   lyrics = []
@@ -121,7 +118,6 @@ class memeMatcher:
           wh.write(r.content) 
       self.album_art = '/audio_files/'+os.path.split(artist_pic)[1]
     except (KeyError, requests.exceptions.MissingSchema):
-      print 'for', self.artist, ':', self.track, "gracenote doesn't have any album art"
       self.album_art = None
   
   def deserialize_timing(self, sync_method):
@@ -167,7 +163,6 @@ class memeMatcher:
         self.linear_sequence_memes(memes, start_section, **kwargs)
       else:
         raise ValueError('unknown alignment method')
-      print self.timings
   
   def linear_sequence_memes(self, memes, start_section, first_block=4, second_block=4):
     shuffled_img = random.sample(memes.keys(), len(memes.keys()))
@@ -191,7 +186,6 @@ class memeMatcher:
           flat_lyrics = reduce(lambda x,y:x+y, self.lyrics)
         top_line = flat_lyrics.pop(0)
         bottom_line = flat_lyrics.pop(0)
-        print "first:", first_block, "second:", second_block, 'current:', block_length, "left:", len(some_bars)
         duration = int(sum([bar[u'duration'] for bar in some_bars[:block_length] if bar != None])*1000)
         some_bars = some_bars[block_length:] #trim the bars that were used
         self.timings.append({"image_url":img_path,
@@ -202,13 +196,11 @@ class memeMatcher:
   
   def random_shuffle_memes(self, memes, start_section):
     shuffled_img = random.sample(memes.keys(), len(memes.keys()))
-    # print shuffled_img
     shuffled_phrases = random.sample(self.lyrics, len(self.lyrics))
     for section in self.track.sections[start_section:]:
       #draw cards
       key = shuffled_img.pop()
       img = memes[key]
-      # print img
       img_path = img["source_image"]
       this_phrase = shuffled_phrases.pop()
       while len(this_phrase) < 2:
@@ -222,7 +214,6 @@ class memeMatcher:
       if len(shuffled_phrases)==0:
         shuffled_phrases = random.sample(self.lyrics, len(self.lyrics))
       lyric_idx = random.sample(range(len(this_phrase)/2),1)[0]*2
-      print img_path
       self.timings.append({"image_url":img_path,
                            "transition_after": int(section['duration']*1000),
                            "top_text": this_phrase[lyric_idx],
