@@ -37,9 +37,6 @@ def read_template(template_name, params={}):
     return render_template(template_name, **params)
 
 def database_connection():
-    if not os.path.isfile(base_path() + '/db/app.db'):
-        raise "YOUR DATABASE DOESNT EXIST FOOL, RUN db/migrate.sh"
-
     return dbapi2.connect (database="burns", user="burns", password="lol")
 
 def favourite_tracks():

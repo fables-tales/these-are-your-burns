@@ -29,9 +29,6 @@ GRACENOTE_KEY = os.environ['GRACENOTE_KEY']
 
 
 def database_connection():
-    if not os.path.isfile(base_path() + '/db/app.db'):
-        raise "YOUR DATABASE DOESNT EXIST FOOL, RUN db/migrate.sh"
-
     return dbapi2.connect (database="burns", user="burns", password="lol")
 
 def grouper(n, iterable, fillvalue=None):
